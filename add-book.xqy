@@ -80,6 +80,7 @@ xdmp:set-response-content-type("text/html"),
 '<!DOCTYPE html>',
 <html>
     <head>
+        <link rel="stylesheet" type="text/css" href="/css/style.css"/>
         <title>Add Book</title>
     </head>
     <body>
