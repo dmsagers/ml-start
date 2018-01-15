@@ -87,7 +87,7 @@ xdmp:set-response-content-type("text/html"),
         <div class="nav-container">
             <a href="book-list.xqy" class="nav-item">Find a Book</a>
             <a href="add-book.xqy" class="nav-item">Add books to Library</a>
-            <a href="content-admin.xqyy" class="nav-item">Books Admin Page</a>
+            <a href="content-admin.xqy" class="nav-item">Books Admin Page</a>
         </div>
         <h1 class="mainTitle">Add Books to Library</h1>
         {

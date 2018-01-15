@@ -10,10 +10,7 @@ declare function local:saveBook(
         $catategory as xs:string?
 ) {
 
-(:Generates string based off of Host time and random concatinated:)
-    (:Pulls the already existing id from a hidden input in the form:)
     let $id as xs:string := local:sanitizeInput(xdmp:get-request-field("id"))
-    (:Creates the new book element that will replace the old in db:)
     let $book as element(book) :=
         element book {
             attribute category { $catategory },
@@ -26,8 +23,7 @@ declare function local:saveBook(
 
     let $uri := '/bookstore/book-' || $id || '.xml'
     let $save := xdmp:document-insert($uri, $book)
-     (:refresh to display correct values:)
-    let $_ := xdmp:redirect-response("update.xqy")
+    let $_ := xdmp:redirect-response("update.xqy?id=" || $id)
     return
         ()
 };
@@ -72,7 +68,7 @@ declare function local:sanitizeInput($cathars as xs:string?) {
             let $id as xs:string := local:sanitizeInput(xdmp:get-request-field("id"))
             let $uri := '/bookstore/book-' || $id || '.xml'
             let $x := xdmp:node-delete(doc($uri))
-            let $ref := xdmp:redirect-response("update.xqy")
+            let $ref := xdmp:redirect-response("book-list.xqy")
             return
                 ""
             ))

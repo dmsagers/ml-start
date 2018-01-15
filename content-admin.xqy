@@ -10,10 +10,7 @@ declare function local:saveBook(
         $category as xs:string?
 ) {
 
-(:Generates string based off of Host time and random concatinated:)
-    (:Pulls the already existing id from a hidden input in the form:)
     let $id as xs:string := local:sanitizeInput(xdmp:get-request-field("id"))
-    (:Creates the new book element that will replace the old in db:)
     let $book as element(book) :=
         element book {
             attribute category { $category },
@@ -26,8 +23,7 @@ declare function local:saveBook(
 
     let $uri := '/bookstore/book-' || $id || '.xml'
     let $save := xdmp:document-insert($uri, $book)
-     (:refresh to display correct values:)
-    let $_ := xdmp:redirect-response("update.xqy")
+    let $_ := xdmp:redirect-response("content-admin.xqy")
     return
         ()
 };
@@ -72,7 +68,7 @@ declare function local:sanitizeInput($chars as xs:string?) {
             let $id as xs:string := local:sanitizeInput(xdmp:get-request-field("id"))
             let $uri := '/bookstore/book-' || $id || '.xml'
             let $x := xdmp:node-delete(doc($uri))
-            let $ref := xdmp:redirect-response("update.xqy")
+            let $ref := xdmp:redirect-response("content-admin.xqy")
             return
                 ""
             ))
@@ -107,28 +103,28 @@ xdmp:set-response-content-type("text/html"),
                 let $log := xdmp:log(/book)
                 for $book in /book
                 return
-                                <form action="update.xqy" method="post">
-                                    <div class="table-data-container">
-                                        <div class="table-data-edit-title"><input type="text" name="title" value="{data($book/title)}" /> </div>
-                                        <div class="table-data-edit"><input type="text" name="author" value="{$book/author}"/> </div>
-                                        <div class="table-data-edit"><input type="text" name="year" value="{data($book/year)}"/></div>
-                                        <div class="table-data-edit"><input type="text" name="price" value="{$book/price}"/> </div>
-                                        <div class="table-data-select">
-                                            <select name="category" id="category">
-                                            <option/>
-                                            {
-                                            for $cat in ('CHILDREN','FICTION','NON-FICTION')
-                                            return
-                                                element option {if ($cat = $book/@category) then (attribute selected {"selected"}) else(),
-                                                attribute value {$cat},$cat}
-                                            }
-                                            </select>
-                                        </div>
-                                        <input type="hidden" name="id" value="{data($book/@id)}"/>
-                                        <div><input type="submit" name="update" value="update" class="table-data-box"/></div>
-                                        <div><input type="submit" name="delete" value="delete" class="table-data-box"/></div>
+                            <form action="content-admin.xqy" method="post">
+                                <div class="table-data-container">
+                                    <div class="table-data-edit-title"><input type="text" name="title" value="{data($book/title)}" /> </div>
+                                    <div class="table-data-edit"><input type="text" name="author" value="{$book/author}"/> </div>
+                                    <div class="table-data-edit"><input type="text" name="year" value="{data($book/year)}"/></div>
+                                    <div class="table-data-edit"><input type="text" name="price" value="{$book/price}"/> </div>
+                                    <div class="table-data-select">
+                                        <select name="category" id="category">
+                                        <option/>
+                                        {
+                                        for $cat in ('CHILDREN','FICTION','NON-FICTION')
+                                        return
+                                            element option {if ($cat = $book/@category) then (attribute selected {"selected"}) else(),
+                                            attribute value {$cat},$cat}
+                                        }
+                                        </select>
                                     </div>
-                                </form>
+                                    <input type="hidden" name="id" value="{data($book/@id)}"/>
+                                    <div><input type="submit" name="update" value="update" class="table-data-box"/></div>
+                                    <div><input type="submit" name="delete" value="delete" class="table-data-box"/></div>
+                                </div>
+                            </form>
                             }
                         </div>
                     </body>
