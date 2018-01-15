@@ -81,22 +81,28 @@ xdmp:set-response-content-type("text/html"),
 <html>
     <head>
         <link rel="stylesheet" type="text/css" href="/css/style.css"/>
-        <title>Add Book</title>
+        <title>Add a Book</title>
     </head>
     <body>
+        <div class="nav-container">
+            <a href="book-list.xqy" class="nav-item">Find a Book</a>
+            <a href="add-book.xqy" class="nav-item">Add books to Library</a>
+            <a href="content-admin.xqyy" class="nav-item">Books Admin Page</a>
+        </div>
+        <h1 class="mainTitle">Add Books to Library</h1>
         {
         if (fn:exists($id) and $id ne '') then (
             <div class="message">Book Saved! ({$id})</div>
         ) else ()
         }
         <form name="add-book" action="add-book.xqy" method="post">
-            <fieldset>
+            <div class="table-data-container">
                 <legend>Add Book</legend>
-                <label for="title">Title</label> <input type="text" id="title" name="title"/>
-                <label for="author">Author</label> <input type="text" id="author" name="author"/>
-                <label for="year">Year</label> <input type="text" id="year" name="year"/>
-                <label for="price">Price</label> <input type="text" id="price" name="price"/>
-                <label for="category">Category</label>
+                <label class="table-data-edit" for="title">Title</label> <input type="text" id="title" name="title"/>
+                <label class="table-data-edit" for="author">Author</label> <input type="text" id="author" name="author"/>
+                <label class="table-data-edit" for="year">Year</label> <input type="text" id="year" name="year"/>
+                <label class="table-data-edit" for="price">Price</label> <input type="text" id="price" name="price"/>
+                <label class="table-data-edit" for="category">Category</label>
                 <select name="category" id="category">
                     <option/>
                     {
@@ -106,7 +112,7 @@ xdmp:set-response-content-type("text/html"),
                     }
                 </select>
                 <input type="submit" value="Save"/>
-            </fieldset>
+            </div>
         </form>
     </body>
 </html>

@@ -64,62 +64,63 @@ xdmp:set-response-content-type("text/html"),
 '<!DOCTYPE html>',
 <html>
     <head>
-
         <link rel="stylesheet" type="text/css" href="/css/style.css"/>
         <title>Book List</title>
     </head>
     <body>
-        <nav id="nav">
-            <a href="add-book.xqy" id="add">Add books to Library</a>
-            <a href="update.xqy" id="update">Update Library</a>
-        </nav>
+        <div class="nav-container">
+            <a href="book-list.xqy" class="nav-item">Find a Book</a>
+            <a href="add-book.xqy" class="nav-item">Add books to Library</a>
+            <a href="content-admin.xqy" class="nav-item">Books Admin Page</a>
+        </div>
+        <h1 class="mainTitle">Find a Book</h1>
 
-            <h1 id="mainTitle">Book List</h1>
         <form method="GET" action="book-list.xqy">
-            <span>
-                <h2>Keyword Search:</h2>
-                <select name="searchType" id="searchType">
+            <div class="search-container">
+                <h3>Keyword Search:</h3>
+                <select name="searchType" class="search-item">
                     {
                     for $field in ('All', 'Title', 'Author', 'Year', 'Price', 'Category')
                     return
                         <option value="{$field}">{$field}</option>
                     }
                 </select>
-                <div id='searchBox'>
+                <div class="search-item">
                     <input name="Input" type="text"/>
                     <input type="submit" value="Search"/>
                 </div>
-            </span>
+            </div>
         </form>
         {
         if (fn:exists($bookList)) then (
-            <h2>Search Results:<br/></h2>,
-            <table align="center" style="width:90%">
-                        <tr>
-                            <th>Title</th>
-                            <th>Author</th>
-                            <th>Year Published</th>
-                            <th>Price</th>
-                            <th>Category</th>
-                        </tr>
-                        {
-                        for $book in $bookList
-                        order by $book/title
-                        return
-                            <tr align="center">
-                                <td>{data($book/title)}</td>
-                                <td>{data($book/author)}</td>
-                                <td>{data($book/year)}</td>
-                                <td>{data($book/price)}</td>
-                                <td>{$book/data(@category)}</td>
-                                <td>
-                                    <button id="edit-button" onclick="location.href='/update.xqy?id={$book/data(@id)}'">edit</button>
-                                </td>
-                            </tr>
-                        }
-                    </table>
+            <h3>Search Results</h3>,
+            <div class="table-container">
+                <div class="table-head-container">
+                    <div class="table-head-title"><strong>Title</strong></div>
+                    <div class="table-head"><strong>Author</strong></div>
+                    <div class="table-head"><strong>Year</strong></div>
+                    <div class="table-head"><strong>Price</strong></div>
+                    <div class="table-head"><strong>Category</strong></div>
+                    <div class="table-head"><strong></strong></div>
+                </div>
+                {
+                for $book in $bookList
+                order by $book/title
+                return
+                    <div class="table-data-container">
+                        <div class="table-data-title">{data($book/title)}</div>
+                        <div class="table-data">{data($book/author)}</div>
+                        <div class="table-data">{data($book/year)}</div>
+                        <div class="table-data">{data($book/price)}</div>
+                        <div class="table-data">{$book/data(@category)}</div>
+                        <div class="table-data">
+                            <button class="edit-button" onclick="location.href='/update.xqy?id={$book/data(@id)}'">edit</button>
+                        </div>
+                    </div>
+                }
+            </div>
         ) else (
-            <div>No Search Results Found.</div>
+            <h3>No Search Results Found</h3>
         )
         }
 
